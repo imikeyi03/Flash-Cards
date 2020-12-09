@@ -8,6 +8,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser());
 app.set('view engine', 'pug');
 
+
+
 //GET ROUTES
 
 app.get('/', (req, res) => {
@@ -19,9 +21,13 @@ app.get('/', (req, res) => {
     }
 });
 
+
+
 app.get('/cards', (req, res) => {
     res.render('card', { prompt: "Who is buried in Grant's tomb?", hint: "Think about whose tomb it is!" });
 });
+
+
 
 app.get('/hello', (req, res) => {
     const name = req.cookies.username
@@ -42,7 +48,20 @@ app.post('/hello', (req,res) => {
 app.post('/goodbye', (req, res) => {
     res.clearCookie('username');
     res.redirect('/hello');
-})
+});
+
+app.use((req, res, next) => {
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+
+app.use((err, req, res, next) => {
+    res.locals.error = err;
+    res.status(err.status);
+    res.render('error');
+});
 
 
 app.listen(3000, () => {
