@@ -8,47 +8,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser());
 app.set('view engine', 'pug');
 
+const mainRoutes = require('./routes');
+const cardRoutes = require('./routes/cards')
 
+app.use(mainRoutes);
+app.use('/cards', cardRoutes)
 
-//GET ROUTES
-
-app.get('/', (req, res) => {
-    const name = req.cookies.username
-    if(name) {
-        res.render('index', { name: name });
-    } else {
-        res.redirect('/hello');
-    }
-});
-
-
-
-app.get('/cards', (req, res) => {
-    res.render('card', { prompt: "Who is buried in Grant's tomb?", hint: "Think about whose tomb it is!" });
-});
-
-
-
-app.get('/hello', (req, res) => {
-    const name = req.cookies.username
-    if(name) {
-        res.redirect('/');
-    } else {
-        res.render('hello');
-    }
-});
-
-// POST ROUTES
-
-app.post('/hello', (req,res) => {
-    res.cookie('username', req.body.username);
-    res.redirect('/');
-});
-
-app.post('/goodbye', (req, res) => {
-    res.clearCookie('username');
-    res.redirect('/hello');
-});
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');
