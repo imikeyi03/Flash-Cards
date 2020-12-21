@@ -1,13 +1,9 @@
 html(lang="en")
-    head
+    head(lang='en')
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Flash Cards
+        link(rel="stylesheet", href="/css/style.css")
     body
-        include includes/header.pug
-        if(name)
-            h2 Welcome #{name}!
-            form(action="/goodbye", method="POST" )
-                button(type='submit') Goodbye       
-        block content
-        include includes/footer.pug
+        include includes/header.pug      
+        block main
